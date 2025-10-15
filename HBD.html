@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HBD จากบาส 💌</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      .envelope-back {
+        position: absolute;
+        bottom: 0;
+        width: 0;
+        height: 0;
+        border-left: 150px solid transparent;
+        border-right: 150px solid transparent;
+        border-bottom: 120px solid #ff6b6b;
+        z-index: 1;
+      }
+
+      .envelope-inner-bg-right {
+          position: absolute;
+          bottom: 25px;
+          left: 154px;
+          width: 219px;
+          height: 174px;
+          background: rgb(246 152 151);
+          clip-path: polygon(51% 100%, 0 0, 100% 0);
+          opacity: 0;
+          transition: opacity 0.5s 
+      ease;
+          z-index: 2;
+          transform: rotate(90deg);
+      }
+        .envelope-inner-bg-left{
+          position: absolute;
+          bottom: 23px;
+          left: -22px;
+          width: 219px;
+          height: 174px;
+          background: rgb(246 152 151);
+          clip-path: polygon(50% 100%, 0 0, 100% 0);
+          opacity: 0;
+          transition: opacity 0.5s 
+      ease;
+          z-index: 2;
+          transform: rotate(-90deg);
+      }
+      
+      .envelope-inner-bg {
+        position: absolute;
+        bottom: 109px;
+        left: -1px;
+        width: 352px;
+        height: 111px;
+        background: #c14845;
+        clip-path: polygon(50% 100%, 0 0, 100% 0);
+        opacity: 0;
+        transition: opacity 0.5s ease;
+      }
+
+      .open .envelope-inner-bg,
+      .open .envelope-inner-bg-left,
+      .open .envelope-inner-bg-right {
+        opacity: 1;
+      }
+
+      body {
+        background: linear-gradient(135deg, #e8d5e8 0%, #d5c5e8 100%);
+        font-family: "Dancing Script", cursive;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 40px;
+      }
+
+      .envelope-wrapper {
+        position: relative;
+        width: 350px;
+        height: 280px;
+        overflow: visible;
+      }
+
+      .envelope {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 220px;
+        background: #ff9a9e;
+        border-radius: 0 0 8px 8px;
+        overflow: visible;
+      }
+
+      .letter {
+        top: 50px;
+        opacity: 0;
+        transform: scale(0.9);
+        z-index: 10;
+        transition: all 0.8s ease;
+      }
+
+      .open .letter {
+        top: -100px;
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      .envelope-flap {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 112%;
+        background: #ff7a7e;
+        clip-path: polygon(0 0, 50% 45%, 100% 0);
+        transform-origin: top center;
+        transition: transform 0.8s ease;
+        z-index: 3;
+
+      }
+
+      .envelope-bottom {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 50%;
+        background: #ff6357;
+        clip-path: polygon(0 100%, 0 98%, 50% 0, 100% 98%, 100% 100%);
+        border-radius: 0 0 8px 8px;
+        z-index: 3;
+      }
+
+      .letter {
+        position: absolute;
+        background-color: #fff;
+        width: 90%;
+        left: 5%;
+        height: 200px;
+        padding: 25px 20px;
+        top: 50px;
+        border-radius: 6px;
+        font-family: "Dancing Script", cursive;
+        display: flex;
+        flex-direction: column;
+        transition: all 0.8s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        z-index: 1;
+        opacity: 0;
+        transform: scale(0.9);
+      }
+
+      .letter-header {
+        font-size: 1.3rem;
+        color: #ff6b81;
+        font-weight: 400;
+      }
+
+      .letter-content {
+        font-size: 1.5rem;
+        color: #000000;
+        line-height: 1.8;
+        font-weight: 400;
+        text-align: center;
+      }
+
+      .letter-footer {
+        margin-top: auto;
+        font-size: 1.4rem;
+        color: #ff8fa3;
+        font-style: italic;
+      }
+
+      .hearts {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 4;
+      }
+
+      .heart {
+        position: absolute;
+        width: 15px;
+        height: 15px;
+        background-color: #ff6b81;
+        transform: rotate(45deg);
+        animation: floatUp 4s ease-out forwards;
+        opacity: 0;
+      }
+
+      .heart::before,
+      .heart::after {
+        content: "";
+        position: absolute;
+        width: 15px;
+        height: 15px;
+        background-color: #ff6b81;
+        border-radius: 50%;
+      }
+
+      .heart::before {
+        top: -7.5px;
+        left: 0;
+      }
+      .heart::after {
+        left: -7.5px;
+        top: 0;
+      }
+
+      @keyframes floatUp {
+        0% {
+          bottom: -20px;
+          opacity: 0;
+          transform: translateX(0) rotate(45deg) scale(0.5);
+        }
+        20% {
+          opacity: 1;
+        }
+        100% {
+          bottom: 350px;
+          opacity: 0;
+          transform: translateX(var(--drift)) rotate(45deg) scale(1.5);
+        }
+      }
+
+      .button-container {
+        display: flex;
+        gap: 20px;
+      }
+
+      button {
+        border: 2px solid #ff6b81;
+        background: #ffffff;
+        color: #ff6b81;
+        padding: 12px 35px;
+        font-size: 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-family: "Dancing Script", cursive;
+        font-weight: 700;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(255, 107, 129, 0.15);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      button:hover {
+        background: #ff6b81;
+        color: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255, 107, 129, 0.3);
+      }
+
+      button:active {
+        transform: translateY(0);
+      }
+
+      .open .envelope-flap {
+        transform: rotateX(-180deg);
+        background: #c14845;
+      }
+
+      @media (max-width: 400px) {
+        .envelope-wrapper {
+          width: 300px;
+          height: 240px;
+        }
+
+        .envelope {
+          height: 190px;
+        }
+
+        .letter {
+          height: 220px;
+          padding: 25px 20px;
+        }
+
+        .letter-header {
+          font-size: 1.1rem;
+        }
+
+        .letter-footer {
+          font-size: 1.2rem;
+        }
+
+        button {
+          padding: 10px 28px;
+          font-size: 0.9rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="envelope-wrapper" id="envelopeWrapper">
+        <div class="envelope" id="envelope">
+          <div class="envelope-inner-bg-right"></div>
+          <div class="envelope-inner-bg-left"></div>
+          <div class="envelope-inner-bg"></div>
+          <div class="envelope-flap"></div>
+          <div class="letter" id="letter">
+            <div class="letter-header">To: Momo</div>
+            <div class="letter-content">
+              Happy Birthday!<br />
+              Wishing you all the best.<br />
+              Love always.
+            </div>
+          </div>
+          <div class="envelope-bottom"></div>
+          <div class="hearts" id="hearts"></div>
+        </div>
+      </div>
+      <div class="button-container">
+        <button onclick="toggleEnvelope(true)">OPEN</button>
+        <button onclick="toggleEnvelope(false)">CLOSE</button>
+      </div>
+    </div>
+
+    <script>
+      const envelope = document.getElementById("envelope");
+      const heartsContainer = document.getElementById("hearts");
+      let heartInterval;
+
+      function toggleEnvelope(open) {
+        if (open) {
+          envelope.classList.add("open");
+          startHearts();
+        } else {
+          envelope.classList.remove("open");
+          stopHearts();
+        }
+      }
+
+      function startHearts() {
+        stopHearts();
+        createHearts();
+        heartInterval = setInterval(createHearts, 600);
+      }
+
+      function stopHearts() {
+        if (heartInterval) {
+          clearInterval(heartInterval);
+          heartInterval = null;
+        }
+        setTimeout(() => {
+          heartsContainer.innerHTML = "";
+        }, 4000);
+      }
+
+      function createHearts() {
+        for (let i = 0; i < 3; i++) {
+          setTimeout(() => {
+            const heart = document.createElement("div");
+            heart.classList.add("heart");
+            const leftPos = 20 + Math.random() * 60;
+            const drift = (Math.random() - 0.5) * 100;
+            heart.style.left = leftPos + "%";
+            heart.style.setProperty("--drift", drift + "px");
+            heartsContainer.appendChild(heart);
+
+            setTimeout(() => {
+              heart.remove();
+            }, 4000);
+          }, i * 200);
+        }
+      }
+    </script>
+  </body>
+</html>
